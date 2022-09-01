@@ -114,7 +114,7 @@ namespace ImageFunctions
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthSmall, height));
                             imageToResize.Save(output_small, encoder);
                             output_small.Position = 0;
-                            await blobContainerClient.UploadBlobAsync("small/" + blobName, output_small);
+                            await blobContainerClient.UploadBlobAsync("small-" + blobName, output_small);
                         }
                         //MEDIUM THUMBNAIL
                         using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
@@ -125,7 +125,7 @@ namespace ImageFunctions
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthMedium, height));
                             imageToResize.Save(output_med, encoder);
                             output_med.Position = 0;
-                            await blobContainerClient.UploadBlobAsync("medium/" + blobName, output_med);
+                            await blobContainerClient.UploadBlobAsync("medium-" + blobName, output_med);
                         }
                         //LARGE THUMBNAIL
                         using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
@@ -136,7 +136,7 @@ namespace ImageFunctions
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthLarge, height));
                             imageToResize.Save(output_large, encoder);
                             output_large.Position = 0;
-                            await blobContainerClient.UploadBlobAsync("large/" + blobName, output_large);
+                            await blobContainerClient.UploadBlobAsync("large-" + blobName, output_large);
                         }
                     }
                     else
