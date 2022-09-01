@@ -96,7 +96,7 @@ namespace ImageFunctions
                         log.LogInformation("Thumbnail width small: " + thumbnailWidthSmall);
                         log.LogInformation("Thumbnail width medium: " + thumbnailWidthMedium);
                         log.LogInformation("Thumbnail width large: " + thumbnailWidthLarge);
-                        bytes[] bytes;
+                        byte[] bytes;
                         //Convert input stream to byte array
                         using(var memoryStream = new MemoryStream())
                         {
