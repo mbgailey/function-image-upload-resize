@@ -86,7 +86,9 @@ namespace ImageFunctions
 
                     if (encoder != null)
                     {
-                        var thumbnailWidth = Convert.ToInt32(Environment.GetEnvironmentVariable("THUMBNAIL_WIDTH"));
+                        var thumbnailWidthSmall = Convert.ToInt32(Environment.GetEnvironmentVariable("THUMBNAIL_WIDTH_SMALL"));
+                        var thumbnailWidthMedium = Convert.ToInt32(Environment.GetEnvironmentVariable("THUMBNAIL_WIDTH_MEDIUM"));
+                        var thumbnailWidthLarge = Convert.ToInt32(Environment.GetEnvironmentVariable("THUMBNAIL_WIDTH_LARGE"));
                         var thumbContainerName = Environment.GetEnvironmentVariable("THUMBNAIL_CONTAINER_NAME");
                         var blobServiceClient = new BlobServiceClient(BLOB_STORAGE_CONNECTION_STRING);
                         var blobContainerClient = blobServiceClient.GetBlobContainerClient(thumbContainerName);
@@ -99,17 +101,42 @@ namespace ImageFunctions
                             bytes = memoryStream.ToArray();
                         }
 
-                        using (var output = new MemoryStream())
+                        using (var output_small = new MemoryStream())
+                        using (var output_med = new MemoryStream())
+                        using (var output_large = new MemoryStream())
                         //using (Image<Rgba32> image = Image.Load(input))
+                        //SMALL THUMBNAIL
                         using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
                         {
-                            var divisor = image.Width / thumbnailWidth;
+                            var divisor = imageToResize.Width / thumbnailWidthSmall;
                             var height = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
 
-                            image.Mutate(x => x.Resize(thumbnailWidth, height));
-                            image.Save(output, encoder);
-                            output.Position = 0;
-                            await blobContainerClient.UploadBlobAsync(blobName, output);
+                            imageToResize.Mutate(x => x.Resize(thumbnailWidthSmall, height));
+                            imageToResize.Save(output_small, encoder);
+                            output_small.Position = 0;
+                            await blobContainerClient.UploadBlobAsync("small/" + blobName, output_small);
+                        }
+                        //MEDIUM THUMBNAIL
+                        using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
+                        {
+                            var divisor = imageToResize.Width / thumbnailWidthMedium;
+                            var height = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
+
+                            imageToResize.Mutate(x => x.Resize(thumbnailWidthMedium, height));
+                            imageToResize.Save(output_med, encoder);
+                            output_med.Position = 0;
+                            await blobContainerClient.UploadBlobAsync("medium/" + blobName, output_med);
+                        }
+                        //LARGE THUMBNAIL
+                        using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
+                        {
+                            var divisor = imageToResize.Width / thumbnailWidthLarge;
+                            var height = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
+
+                            imageToResize.Mutate(x => x.Resize(thumbnailWidthLarge, height));
+                            imageToResize.Save(output_large, encoder);
+                            output_large.Position = 0;
+                            await blobContainerClient.UploadBlobAsync("large/" + blobName, output_large);
                         }
                     }
                     else

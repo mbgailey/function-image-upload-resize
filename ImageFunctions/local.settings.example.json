@@ -4,7 +4,9 @@
     "AzureWebJobsStorage": "<STORAGE_ACCOUNT_CONNECTION_STRING>",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "THUMBNAIL_CONTAINER_NAME": "thumbnails",
-    "THUMBNAIL_WIDTH": "200",
+    "THUMBNAIL_WIDTH_SMALL": "100",
+    "THUMBNAIL_WIDTH_MEDIUM": "300",
+    "THUMBNAIL_WIDTH_LARGE": "1024",
     "datatype": "binary"
   }
 }
