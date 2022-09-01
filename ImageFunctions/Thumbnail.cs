@@ -93,6 +93,9 @@ namespace ImageFunctions
                         var blobServiceClient = new BlobServiceClient(BLOB_STORAGE_CONNECTION_STRING);
                         var blobContainerClient = blobServiceClient.GetBlobContainerClient(thumbContainerName);
                         var blobName = GetBlobNameFromUrl(createdEvent.Url);
+                        log.LogInformation("Thumbnail width small: " + thumbnailWidthSmall);
+                        log.LogInformation("Thumbnail width medium: " + thumbnailWidthMedium);
+                        log.LogInformation("Thumbnail width large: " + thumbnailWidthLarge);
                         bytes[] bytes;
                         //Convert input stream to byte array
                         using(var memoryStream = new MemoryStream())
