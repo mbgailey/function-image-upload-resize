@@ -109,21 +109,21 @@ namespace ImageFunctions
                         using (var output_large = new MemoryStream())
                         //using (Image<Rgba32> image = Image.Load(input))
                         //SMALL THUMBNAIL
-                        // using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
-                        // {
-                        //     var divisor = imageToResize.Width / thumbnailWidthSmall;
-                        //     var height = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
+                        using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
+                        {
+                            var divisor = imageToResize.Width / thumbnailWidthSmall;
+                            var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
 
-                        //     imageToResize.Mutate(x => x.Resize(thumbnailWidthSmall, height));
-                        //     imageToResize.Save(output_small, encoder);
-                        //     output_small.Position = 0;
-                        //     await blobContainerClient.UploadBlobAsync("small-" + blobName, output_small);
-                        // }
+                            imageToResize.Mutate(x => x.Resize(thumbnailWidthSmall, height));
+                            imageToResize.Save(output_small, encoder);
+                            output_small.Position = 0;
+                            await blobContainerClient.UploadBlobAsync("small-" + blobName, output_small);
+                        }
                         //MEDIUM THUMBNAIL
                         using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
                         {
                             var divisor = imageToResize.Width / thumbnailWidthMedium;
-                            var height = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
+                            var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
 
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthMedium, height));
                             imageToResize.Save(output_med, encoder);
@@ -131,16 +131,16 @@ namespace ImageFunctions
                             await blobContainerClient.UploadBlobAsync("medium-" + blobName, output_med);
                         }
                         // //LARGE THUMBNAIL
-                        // using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
-                        // {
-                        //     var divisor = imageToResize.Width / thumbnailWidthLarge;
-                        //     var height = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
+                        using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
+                        {
+                            var divisor = imageToResize.Width / thumbnailWidthLarge;
+                            var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
 
-                        //     imageToResize.Mutate(x => x.Resize(thumbnailWidthLarge, height));
-                        //     imageToResize.Save(output_large, encoder);
-                        //     output_large.Position = 0;
-                        //     await blobContainerClient.UploadBlobAsync("large-" + blobName, output_large);
-                        // }
+                            imageToResize.Mutate(x => x.Resize(thumbnailWidthLarge, height));
+                            imageToResize.Save(output_large, encoder);
+                            output_large.Position = 0;
+                            await blobContainerClient.UploadBlobAsync("large-" + blobName, output_large);
+                        }
                     }
                     else
                     {
