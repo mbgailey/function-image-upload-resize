@@ -135,7 +135,9 @@ namespace ImageFunctions
                         {
                             var divisor = imageToResize.Width / thumbnailWidthLarge;
                             var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
-
+                            log.LogInformation("Input Image (w x h): " + imageToResize.Width + " x " imageToResize.Height);
+                            log.LogInformation("Divisor: " + divisor);
+                            log.LogInformation("New Size (w x h): " thumbnailWidthLarge + " x " + height);
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthLarge, height));
                             imageToResize.Save(output_large, encoder);
                             output_large.Position = 0;
