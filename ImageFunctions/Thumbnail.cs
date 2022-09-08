@@ -126,7 +126,7 @@ namespace ImageFunctions
                             log.LogInformation("***Medium Thumbnail***");
                             log.LogInformation("Input Image (w x h): " + imageToResize.Width + " x " + imageToResize.Height);
                             log.LogInformation("Divisor: " + divisor);
-                            log.LogInformation("New Size (w x h): " + thumbnailWidthLarge + " x " + height);
+                            log.LogInformation("New Size (w x h): " + thumbnailWidthMedium + " x " + height);
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthMedium, height));
                             imageToResize.Save(output_med, encoder);
                             output_med.Position = 0;
@@ -136,7 +136,8 @@ namespace ImageFunctions
                         using (var output_large = new MemoryStream())
                         using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
                         {
-                            var divisor = imageToResize.Width / thumbnailWidthLarge;
+                            imageToResize.Mutate(img => img.AutoOrient());
+                            var divisor = (decimal)imageToResize.Width / thumbnailWidthLarge;
                             var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
                             log.LogInformation("***Large Thumbnail***");
                             log.LogInformation("Input Image (w x h): " + imageToResize.Width + " x " + imageToResize.Height);
