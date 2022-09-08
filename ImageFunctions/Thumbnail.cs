@@ -95,7 +95,7 @@ namespace ImageFunctions
                         var blobName = GetBlobNameFromUrl(createdEvent.Url);
                         log.LogInformation("Thumbnail width small: " + thumbnailWidthSmall);
                         log.LogInformation("Thumbnail width medium: " + thumbnailWidthMedium);
-                        log.LogInformation("Thumbnail width large: " + thumbnailWidthLarge);
+                        log.LogInformation("Thumbnail width large (test): " + thumbnailWidthLarge);
                         byte[] bytes;
                         //Convert input stream to byte array
                         using(var memoryStream = new MemoryStream())
