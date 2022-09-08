@@ -93,9 +93,9 @@ namespace ImageFunctions
                         var blobServiceClient = new BlobServiceClient(BLOB_STORAGE_CONNECTION_STRING);
                         var blobContainerClient = blobServiceClient.GetBlobContainerClient(thumbContainerName);
                         var blobName = GetBlobNameFromUrl(createdEvent.Url);
-                        log.LogInformation("Thumbnail width small: " + thumbnailWidthSmall);
-                        log.LogInformation("Thumbnail width medium: " + thumbnailWidthMedium);
-                        log.LogInformation("Thumbnail width large: " + thumbnailWidthLarge);
+                        // log.LogInformation("Thumbnail width small: " + thumbnailWidthSmall);
+                        // log.LogInformation("Thumbnail width medium: " + thumbnailWidthMedium);
+                        // log.LogInformation("Thumbnail width large: " + thumbnailWidthLarge);
                         byte[] bytes;
                         //Convert input stream to byte array
                         using(var memoryStream = new MemoryStream())
@@ -109,7 +109,8 @@ namespace ImageFunctions
                         //SMALL THUMBNAIL
                         using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
                         {
-                            var divisor = imageToResize.Width / thumbnailWidthSmall;
+                            imageToResize.Mutate(img => img.AutoOrient());
+                            var divisor = (decimal)imageToResize.Width / thumbnailWidthSmall;
                             var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
 
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthSmall, height));
@@ -121,12 +122,13 @@ namespace ImageFunctions
                         using (var output_med = new MemoryStream())
                         using (var imageToResize = Image.Load(bytes, out IImageFormat imageFormat))
                         {
-                            var divisor = imageToResize.Width / thumbnailWidthMedium;
+                            imageToResize.Mutate(img => img.AutoOrient());
+                            var divisor = (decimal)imageToResize.Width / thumbnailWidthMedium;
                             var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
-                            log.LogInformation("***Medium Thumbnail***");
-                            log.LogInformation("Input Image (w x h): " + imageToResize.Width + " x " + imageToResize.Height);
-                            log.LogInformation("Divisor: " + divisor);
-                            log.LogInformation("New Size (w x h): " + thumbnailWidthMedium + " x " + height);
+                            // log.LogInformation("***Medium Thumbnail***");
+                            // log.LogInformation("Input Image (w x h): " + imageToResize.Width + " x " + imageToResize.Height);
+                            // log.LogInformation("Divisor: " + divisor);
+                            // log.LogInformation("New Size (w x h): " + thumbnailWidthMedium + " x " + height);
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthMedium, height));
                             imageToResize.Save(output_med, encoder);
                             output_med.Position = 0;
@@ -139,10 +141,10 @@ namespace ImageFunctions
                             imageToResize.Mutate(img => img.AutoOrient());
                             var divisor = (decimal)imageToResize.Width / thumbnailWidthLarge;
                             var height = Convert.ToInt32(Math.Round((decimal)(imageToResize.Height / divisor)));
-                            log.LogInformation("***Large Thumbnail***");
-                            log.LogInformation("Input Image (w x h): " + imageToResize.Width + " x " + imageToResize.Height);
-                            log.LogInformation("Divisor: " + divisor);
-                            log.LogInformation("New Size (w x h): " + thumbnailWidthLarge + " x " + height);
+                            // log.LogInformation("***Large Thumbnail***");
+                            // log.LogInformation("Input Image (w x h): " + imageToResize.Width + " x " + imageToResize.Height);
+                            // log.LogInformation("Divisor: " + divisor);
+                            // log.LogInformation("New Size (w x h): " + thumbnailWidthLarge + " x " + height);
                             imageToResize.Mutate(x => x.Resize(thumbnailWidthLarge, height));
                             imageToResize.Save(output_large, encoder);
                             output_large.Position = 0;
